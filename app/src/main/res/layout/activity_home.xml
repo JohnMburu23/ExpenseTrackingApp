@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    android:id="@+id/drawer"
+    android:layout_gravity="start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hometoolbar"
+            android:elevation="4dp"
+            android:background="#2196F3"
+            app:title="Home"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textWelcome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Welcome to expenseEase app"
+                android:layout_below="@+id/hometoolbar"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textTotalIncome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Income: Ksh 0"
+            android:layout_below="@+id/hometoolbar"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/textTotalExpenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Expenses: Ksh 0"
+            android:layout_below="@+id/textTotalIncome"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:id="@+id/textCurrentBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Balance: Ksh 0"
+            android:layout_below="@+id/textTotalExpenses"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"/>
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/bottom_navigation_menu"
+            android:background="#2196F3"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/bottomnavigationview"/>
+
+    </RelativeLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_drawer_header"
+        app:menu="@menu/nav_menu" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

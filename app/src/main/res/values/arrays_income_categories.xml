@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="income_categories">
+        <item>Salary/Wages</item>
+        <item>Investments</item>
+        <item>Gifts</item>
+    </array>
+</resources>

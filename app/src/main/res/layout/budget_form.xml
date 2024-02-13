@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewBudgetType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Expense Category To Set Budget"/>
+    <Spinner
+        android:id="@+id/spinnerExpenseToBudget"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:layout_height="wrap_content"
+        android:entries="@array/expense_categories"/>
+
+    <TextView
+        android:id="@+id/textViewBudgetDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"/>
+
+
+    <EditText
+        android:id="@+id/editTextBudgetDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Select Date"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/textViewBudgetAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Budget Amount"/>
+
+    <EditText
+        android:id="@+id/editTextBudgetAmount"
+        android:layout_width="match_parent"
+        android:hint="amount"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:inputType="numberDecimal"/>
+
+    <TextView
+        android:id="@+id/textViewBudgetDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Budget Description"/>
+
+    <EditText
+        android:id="@+id/editTextBudgetDescription"
+        android:hint="description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:inputType="text"/>
+
+
+</LinearLayout>

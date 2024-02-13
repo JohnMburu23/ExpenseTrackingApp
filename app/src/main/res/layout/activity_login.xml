@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:hint="Username or email"
         android:inputType="text"
+        android:background="@drawable/edit_text_background"
         android:layout_marginBottom="32dp"/>
     <TextView
         android:layout_width="match_parent"
@@ -39,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Phone no."
+        android:background="@drawable/edit_text_background"
         android:inputType="phone"
         android:layout_marginBottom="32dp"/>
     <TextView
@@ -52,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter Password"
+        android:background="@drawable/edit_text_background"
         android:inputType="textPassword" />
 
     <LinearLayout
@@ -93,7 +96,7 @@
         android:id="@+id/clickRegisterTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Don't have an account?Click here or the Register button to Sign Up."
+        android:text="Don't have an account?Click here to Sign Up."
         android:textSize="16dp"
         android:textColor="#2196F3"
         android:layout_gravity="center_horizontal"/>

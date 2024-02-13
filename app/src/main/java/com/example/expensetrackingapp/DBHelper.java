@@ -16,6 +16,40 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PHONE_NUMBER = "phone_number";
     private static final String COLUMN_PASSWORD = "password";
 
+
+    private static final String TABLE_EXPENSE = "expense";
+    private static final String COLUMN_EXPENSE_ID = "expense_id";
+    private static final String COLUMN_EXPENSE_USER_ID = "user_id"; // Foreign key
+    private static final String COLUMN_EXPENSE_CATEGORY = "category";
+    private static final String COLUMN_EXPENSE_DATE = "date";
+    private static final String COLUMN_EXPENSE_AMOUNT = "amount";
+    private static final String COLUMN_EXPENSE_DESCRIPTION = "description";
+
+
+
+    private static final String TABLE_BUDGET = "budget";
+    private static final String COLUMN_BUDGET_ID = "budget_id";
+    private static final String COLUMN_BUDGET_USER_ID = "user_id";
+    private static final String COLUMN_BUDGET_CATEGORY = "category";
+    private static final String COLUMN_BUDGET_DATE = "date";
+    private static final String COLUMN_BUDGET_AMOUNT = "amount";
+    private static final String COLUMN_BUDGET_DESCRIPTION = "description";
+
+
+
+    private static final String TABLE_INCOME = "income";
+    private static final String COLUMN_INCOME_ID = "income_id";
+    private static final String COLUMN_INCOME_USER_ID = "user_id";
+    private static final String COLUMN_INCOME_DATE = "date";
+    private static final String COLUMN_INCOME_SOURCE = "source";
+    private static final String COLUMN_INCOME_AMOUNT = "amount";
+    private static final String COLUMN_INCOME_DESCRIPTION = "description";
+
+
+
+
+
+
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -28,11 +62,97 @@ public class DBHelper extends SQLiteOpenHelper {
                 + COLUMN_PHONE_NUMBER + " TEXT, "
                 + COLUMN_PASSWORD + " TEXT)";
         db.execSQL(createTableQuery);
+
+        // Create expense table
+        String createExpenseTableQuery = "CREATE TABLE " + TABLE_EXPENSE + " ("
+                + COLUMN_EXPENSE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_EXPENSE_USER_ID + " INTEGER, "
+                + COLUMN_EXPENSE_CATEGORY + " TEXT, "
+                + COLUMN_EXPENSE_DATE + " TEXT, "
+                + COLUMN_EXPENSE_AMOUNT + " REAL, "
+                + COLUMN_EXPENSE_DESCRIPTION + " TEXT, "
+                + "FOREIGN KEY(" + COLUMN_EXPENSE_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + "))";
+        db.execSQL(createExpenseTableQuery);
+
+        String createBudgetTableQuery = "CREATE TABLE " + TABLE_BUDGET + " ("
+                + COLUMN_BUDGET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_BUDGET_USER_ID + " INTEGER, "
+                + COLUMN_BUDGET_CATEGORY + " TEXT, "
+                + COLUMN_BUDGET_DATE + " TEXT, "
+                + COLUMN_BUDGET_AMOUNT + " REAL, "
+                + COLUMN_BUDGET_DESCRIPTION + " TEXT, "
+                + "FOREIGN KEY(" + COLUMN_BUDGET_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + "))";
+        db.execSQL(createBudgetTableQuery);
+
+        String createIncomeTableQuery = "CREATE TABLE " + TABLE_INCOME + " ("
+                + COLUMN_INCOME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COLUMN_INCOME_USER_ID + " INTEGER, "
+                + COLUMN_INCOME_SOURCE + " TEXT, "
+                + COLUMN_INCOME_DATE + " TEXT, "
+                + COLUMN_INCOME_AMOUNT + " REAL, "
+                + COLUMN_INCOME_DESCRIPTION + " TEXT, "
+                + "FOREIGN KEY(" + COLUMN_INCOME_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + "))";
+        db.execSQL(createIncomeTableQuery);
+
+
     }
+    public boolean addExpense(int userId, String category, String date, double amount, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_EXPENSE_USER_ID, userId);
+        values.put(COLUMN_EXPENSE_CATEGORY, category);
+        values.put(COLUMN_EXPENSE_DATE, date);
+        values.put(COLUMN_EXPENSE_AMOUNT, amount);
+        values.put(COLUMN_EXPENSE_DESCRIPTION, description);
+        try {
+            long result = db.insert(TABLE_EXPENSE, null, values);
+            return result != -1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    // Method to add an income
+    public boolean addIncome(int userId, String source, String date, double amount, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_INCOME_USER_ID, userId);
+        values.put(COLUMN_INCOME_SOURCE, source);
+        values.put(COLUMN_INCOME_DATE, date);
+        values.put(COLUMN_INCOME_AMOUNT, amount);
+        values.put(COLUMN_INCOME_DESCRIPTION, description);
+        long result = db.insert(TABLE_INCOME, null, values);
+        db.close();
+        return result != -1;
+
+    }
+
+    // Method to add a budget
+    public boolean addBudget(int userId, String category, String date, double amount, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_BUDGET_USER_ID, userId);
+        values.put(COLUMN_BUDGET_CATEGORY, category);
+        values.put(COLUMN_BUDGET_DATE, date);
+        values.put(COLUMN_BUDGET_AMOUNT, amount);
+        values.put(COLUMN_BUDGET_DESCRIPTION, description);
+        long result = db.insert(TABLE_BUDGET, null, values);
+        db.close();
+        return result != -1;
+
+    }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INCOME);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUDGET);
         onCreate(db);
     }
 

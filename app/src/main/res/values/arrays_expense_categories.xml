@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="expense_categories">
+        <item>Food</item>
+        <item>Transport</item>
+        <item>Education</item>
+        <item>Rent/Mortage</item>
+        <item>Utilities(electricity,water,gas)</item>
+        <item>Groceries</item>
+        <item>Entertainment</item>
+        <item>Clothing</item>
+        <item>Healthcare</item>
+        <item>Dining out/Restaurants</item>
+        <item>Insurance</item>
+        <item>Debts</item>
+        <item>Personal care</item>
+        <item>Gifts/Donations</item>
+    </array>
+</resources>

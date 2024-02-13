@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/textViewExpenseType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expense Category"/>
+    <Spinner
+        android:id="@+id/spinnerExpenseType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:entries="@array/expense_categories"/>
+
+    <TextView
+        android:id="@+id/textViewExpenseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"/>
+
+
+    <EditText
+        android:id="@+id/editTextExpenseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Select Date"
+        android:focusable="false" />
+
+    <TextView
+        android:id="@+id/textViewExpenseAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount"/>
+
+    <EditText
+        android:id="@+id/editTextExpenseAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="amount"
+        android:background="@drawable/edit_text_background"
+        android:inputType="numberDecimal"/>
+
+    <TextView
+        android:id="@+id/textViewExpenseDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Expense Description"/>
+
+    <EditText
+        android:id="@+id/editTextExpenseDescription"
+        android:layout_width="match_parent"
+        android:background="@drawable/edit_text_background"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="description"
+        android:inputType="text"/>
+
+
+</LinearLayout>

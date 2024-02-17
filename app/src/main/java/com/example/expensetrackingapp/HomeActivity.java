@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                     //finish();
                 }
                 else if(id == R.id.nav_logout){
-                    
+                    onBackPressed();
                 }
                 drawerLayout.closeDrawers();
                 return true;

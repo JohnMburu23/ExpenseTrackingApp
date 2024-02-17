@@ -66,6 +66,7 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
             incomeAmountTextView = itemView.findViewById(R.id.incomeAmountTextView);
             incomeDescriptionTextView = itemView.findViewById(R.id.incomeDescriptionTextView);
 
+<<<<<<< HEAD
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -75,6 +76,15 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
                         return true;
                     }
                     return false;
+=======
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        showDeleteDialog(position);
+                    }
+>>>>>>> origin/expense-tracker
                 }
             });
         }

@@ -3,15 +3,19 @@ package com.example.expensetrackingapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "expenseTrackerAppAuthenticationDb";
+    private static final String DATABASE_NAME = "expenseTrackerAppDb";
     private static final int DATABASE_VERSION = 1;
 
     private static final String TABLE_USERS = "users";
-    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_ID = "user_id";
     private static final String COLUMN_USERNAME = "username";
     private static final String COLUMN_PHONE_NUMBER = "phone_number";
     private static final String COLUMN_PASSWORD = "password";
@@ -188,5 +192,161 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return count > 0;
     }
+    public List<ExpenseModel> getUserExpenses(int userId) {
+        List<ExpenseModel> expenses = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                COLUMN_EXPENSE_ID,
+                COLUMN_EXPENSE_CATEGORY,
+                COLUMN_EXPENSE_DATE,
+                COLUMN_EXPENSE_AMOUNT,
+                COLUMN_EXPENSE_DESCRIPTION
+        };
+        String selection = COLUMN_EXPENSE_USER_ID + "=?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = db.query(
+                TABLE_EXPENSE,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                ExpenseModel expense = new ExpenseModel();
+                expense.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_EXPENSE_ID)));
+                expense.setUserId(userId); // Assuming you also want to set user ID for each expense
+                expense.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_EXPENSE_CATEGORY)));
+                expense.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_EXPENSE_DATE)));
+                expense.setAmount(cursor.getDouble(cursor.getColumnIndex(COLUMN_EXPENSE_AMOUNT)));
+                expense.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_EXPENSE_DESCRIPTION)));
+                expenses.add(expense);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return expenses;
+    }
+
+    public List<BudgetModel> getUserBudgets(int userId) {
+        List<BudgetModel> budgets = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                COLUMN_BUDGET_ID,
+                COLUMN_BUDGET_CATEGORY,
+                COLUMN_BUDGET_DATE,
+                COLUMN_BUDGET_AMOUNT,
+                COLUMN_BUDGET_DESCRIPTION
+        };
+        String selection = COLUMN_BUDGET_USER_ID + "=?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = db.query(
+                TABLE_BUDGET,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                BudgetModel budget = new BudgetModel();
+                budget.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_BUDGET_ID)));
+                budget.setUserId(userId); // Assuming you also want to set user ID for each budget
+                budget.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_BUDGET_CATEGORY)));
+                budget.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_BUDGET_DATE)));
+                budget.setAmount(cursor.getDouble(cursor.getColumnIndex(COLUMN_BUDGET_AMOUNT)));
+                budget.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_BUDGET_DESCRIPTION)));
+                budgets.add(budget);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return budgets;
+    }
+
+    public List<IncomeModel> getUserIncomes(int userId) {
+        List<IncomeModel> incomes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {
+                COLUMN_INCOME_ID,
+                COLUMN_INCOME_SOURCE,
+                COLUMN_INCOME_DATE,
+                COLUMN_INCOME_AMOUNT,
+                COLUMN_INCOME_DESCRIPTION
+        };
+        String selection = COLUMN_INCOME_USER_ID + "=?";
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = db.query(
+                TABLE_INCOME,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                IncomeModel income = new IncomeModel();
+                income.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_INCOME_ID)));
+                income.setUserId(userId); // Assuming you also want to set user ID for each income
+                income.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_INCOME_SOURCE)));
+                income.setDate(cursor.getString(cursor.getColumnIndex(COLUMN_INCOME_DATE)));
+                income.setAmount(cursor.getDouble(cursor.getColumnIndex(COLUMN_INCOME_AMOUNT)));
+                income.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_INCOME_DESCRIPTION)));
+                incomes.add(income);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+
+        return incomes;
+    }
+    public boolean deleteExpense(int userId, int expenseId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            int rowsAffected = db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + "=? AND " + COLUMN_EXPENSE_USER_ID + "=?",
+                    new String[]{String.valueOf(expenseId), String.valueOf(userId)});
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+    public boolean deleteIncome(int userId, int incomeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            int rowsAffected = db.delete(TABLE_INCOME, COLUMN_INCOME_ID + "=? AND " + COLUMN_INCOME_USER_ID + "=?",
+                    new String[]{String.valueOf(incomeId), String.valueOf(userId)});
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+    public boolean deleteBudget(int userId, int budgetId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            int rowsAffected = db.delete(TABLE_BUDGET, COLUMN_BUDGET_ID + "=? AND " + COLUMN_BUDGET_USER_ID + "=?",
+                    new String[]{String.valueOf(budgetId), String.valueOf(userId)});
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
 
 }

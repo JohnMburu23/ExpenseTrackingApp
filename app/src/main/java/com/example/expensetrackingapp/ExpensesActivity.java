@@ -24,11 +24,20 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class ExpensesActivity extends AppCompatActivity {
     private DBHelper dbHelper;
+    private RecyclerView recyclerView;
+    private ExpensesAdapter adapter;
+    private List<ExpenseModel> expenses;
+
+
+
 
 
     @Override
@@ -36,6 +45,15 @@ public class ExpensesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
         dbHelper = new DBHelper(this);
+
+        // Initialize RecyclerView and adapter
+        recyclerView = findViewById(R.id.recyclerViewExpenses);
+        adapter = new ExpensesAdapter(expenses, dbHelper);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+        loadExpenses();
 
 
         Button btnAddExpense = findViewById(R.id.btnAddExpense);
@@ -45,6 +63,12 @@ public class ExpensesActivity extends AppCompatActivity {
                 showAddExpenseDialog();
             }
         });
+    }
+    public void loadExpenses(){
+        expenses = dbHelper.getUserExpenses(1);
+        adapter.setExpenses(expenses);
+        adapter.notifyDataSetChanged();
+
     }
 
     private void showAddExpenseDialog() {
@@ -78,11 +102,14 @@ public class ExpensesActivity extends AppCompatActivity {
 
             double expenseAmount = Double.parseDouble(expenseAmountStr);
 
-            // Get user ID from session or wherever it's stored
-            int userId = 1; // Example value, you should replace it with the actual user ID
-
             // Add the expense to the database
+            int userId = 1;
+            expenses = dbHelper.getUserExpenses(userId);
             if (dbHelper.addExpense(userId, expenseType, expenseDate, expenseAmount, expenseDescription)) {
+                expenses = dbHelper.getUserExpenses(userId);
+                adapter.setExpenses(expenses);
+                adapter.notifyDataSetChanged();
+
                 Toast.makeText(ExpensesActivity.this, "Expense added!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(ExpensesActivity.this, "Failed to add expense", Toast.LENGTH_SHORT).show();

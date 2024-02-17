@@ -71,7 +71,7 @@ public class HomeActivity extends AppCompatActivity {
                     //finish();
                 }
                 else if(id == R.id.nav_logout){
-
+                    
                 }
                 drawerLayout.closeDrawers();
                 return true;
@@ -96,9 +96,6 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.income:
                     startActivity(new Intent(HomeActivity.this,IncomeActivity.class));
                     return true;
-                case R.id.statistics:
-                    startActivity(new Intent(HomeActivity.this,StatisticsActivity.class));
-                    return true;
             }
             return false;
         });
@@ -109,6 +106,8 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void  onBackPressed(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm Exit");
+        builder.setIcon(R.drawable.ic_exit);
         builder.setMessage("Do you want to exit the app?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

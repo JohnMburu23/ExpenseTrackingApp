@@ -1,42 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".ExpensesActivity">
 
     <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarExpenses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/toolbarExpenses"
-        android:elevation="4dp"
         android:background="#2196F3"
-        app:title="Expenses"/>
+        android:elevation="4dp"
+        app:title="Expenses" />
 
-    <View
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewExpenses"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarExpenses"
+        android:layout_marginTop="4dp"
+        android:padding="8dp"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnAddExpense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="32dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        >
+        android:text="Add Expense"
+        android:background="@drawable/round_button_blue" />
 
-        <Button android:id="@+id/btnAddExpense"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Expense"
-            android:background="@drawable/round_button_blue"
-
-            />
-
-
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

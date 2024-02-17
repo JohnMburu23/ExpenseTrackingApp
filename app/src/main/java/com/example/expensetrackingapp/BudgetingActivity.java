@@ -2,6 +2,8 @@ package com.example.expensetrackingapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -14,9 +16,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.List;
 
 public class BudgetingActivity extends AppCompatActivity {
     private DBHelper dbHelper;
+    private RecyclerView recyclerView;
+    private BudgetsAdapter adapter;
+    private List<BudgetModel> budgets;
 
 
     @Override
@@ -24,6 +30,15 @@ public class BudgetingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budgeting);
         dbHelper = new DBHelper(this);
+
+        // Initialize RecyclerView and adapter
+        recyclerView = findViewById(R.id.recyclerViewBudgeting);
+        adapter = new BudgetsAdapter(budgets,dbHelper);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+        loadBudgets();
 
 
         Button btnAddBudget = findViewById(R.id.btnAddBudget);
@@ -34,6 +49,13 @@ public class BudgetingActivity extends AppCompatActivity {
             }
         });
     }
+    public void loadBudgets(){
+        budgets = dbHelper.getUserBudgets(1);
+        adapter.setBudgets(budgets);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
     private void showAddBudgetDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -71,6 +93,9 @@ public class BudgetingActivity extends AppCompatActivity {
 
             // Add the budget to the database
             if (dbHelper.addBudget(userId, budgetType, budgetDate, budgetAmount, budgetDescription)) {
+                budgets = dbHelper.getUserBudgets(userId);
+                adapter.setBudgets(budgets);
+                adapter.notifyDataSetChanged();
                 Toast.makeText(BudgetingActivity.this, "Budget set successfully!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(BudgetingActivity.this, "Failed to set budget", Toast.LENGTH_SHORT).show();

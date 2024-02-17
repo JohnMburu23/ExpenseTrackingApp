@@ -12,14 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
-
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,118 +21,156 @@
             app:title="Home"/>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView1"
+            android:id="@+id/cardViewIncome"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_below="@+id/hometoolbar"
-            android:layout_marginTop="20dp">
+            android:layout_height="100dp"
+            android:layout_below="@id/hometoolbar"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_gravity="center">
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Income:"
-                        android:textSize="18sp"
-                        android:layout_alignParentLeft="true">
-                    </TextView>
+                    android:gravity="center_vertical"
+                    android:text="Income:"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="000"
-                        android:textColor="#03A9F4"
-                        android:textSize="18sp"
-                        android:layout_alignParentRight="true">
-                    </TextView>
-
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Expenses:"
-                        android:textSize="18sp"
-                        android:layout_alignParentLeft="true">
-                    </TextView>
+                    android:layout_marginStart="8dp"
+                    android:text="00"
+                    android:textColor="#2196F3"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="000"
-                        android:textColor="#E60707"
-                        android:textSize="18sp"
-                        android:layout_alignParentRight="true">
-                    </TextView>
+            </LinearLayout>
 
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewExpense"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@id/cardViewIncome"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Balance:"
-                        android:textSize="18sp"
-                        android:layout_alignParentLeft="true">
-                    </TextView>
+                    android:gravity="center_vertical"
+                    android:text="Expenses:"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="000"
-                        android:textSize="18sp"
-                        android:layout_alignParentRight="true">
-                    </TextView>
-
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Total Budget:"
-                        android:textSize="18sp"
-                        android:layout_alignParentLeft="true">
-                    </TextView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="000"
-                        android:textSize="18sp"
-                        android:layout_alignParentRight="true">
-                    </TextView>
-
-                </RelativeLayout>
+                    android:layout_marginStart="8dp"
+                    android:text="00"
+                    android:textColor="#F44336"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/cardViewBudget"
+            android:layout_below="@id/cardViewExpense"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Budgets:"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="00"
+                    android:textColor="#2196F3"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/cardViewBalance"
+            android:layout_below="@id/cardViewBudget"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Balance:"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="00"
+                    android:textColor="#2196F3"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
     </RelativeLayout>
-
-
-
-
-
 
 
 

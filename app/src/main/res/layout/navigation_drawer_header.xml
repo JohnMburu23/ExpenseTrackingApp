@@ -13,6 +13,15 @@
         android:src="@drawable/ic_profile">
     </ImageView>
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome back!"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:layout_marginTop="6dp">
+    </TextView>
+
+    <TextView
         android:id="@+id/navHeaderUsernameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,6 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Phone number"
+        android:layout_marginTop="6dp"
+
         android:textSize="24sp">
     </TextView>
 

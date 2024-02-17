@@ -26,9 +26,4 @@
         android:id="@+id/budgeting"
         android:icon="@drawable/ic_budget"
         ></item>
-    <item
-        android:title="Statistics"
-        android:id="@+id/statistics"
-        android:icon="@drawable/ic_chart"
-        ></item>
 </menu>

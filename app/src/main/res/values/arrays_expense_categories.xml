@@ -5,7 +5,7 @@
         <item>Transport</item>
         <item>Education</item>
         <item>Rent/Mortage</item>
-        <item>Utilities(electricity,water,gas)</item>
+        <item>Utilities(electricity,water,gas,etc)</item>
         <item>Groceries</item>
         <item>Entertainment</item>
         <item>Clothing</item>
@@ -15,5 +15,6 @@
         <item>Debts</item>
         <item>Personal care</item>
         <item>Gifts/Donations</item>
+        <item>Other</item>
     </array>
 </resources>

@@ -2,6 +2,8 @@ package com.example.expensetrackingapp;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -16,10 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 public class IncomeActivity extends AppCompatActivity {
     private DBHelper dbHelper;
+    private RecyclerView recyclerView;
+    private IncomeAdapter adapter;
+    private List<IncomeModel> incomes;
 
 
     @Override
@@ -27,6 +33,15 @@ public class IncomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_income);
         dbHelper = new DBHelper(this);
+
+        // Initialize RecyclerView and adapter
+        recyclerView = findViewById(R.id.recyclerViewIncome);
+        adapter = new IncomeAdapter(incomes,dbHelper);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+        loadIncomes();
 
 
         Button btnAddBudget = findViewById(R.id.btnAddIncome);
@@ -37,6 +52,13 @@ public class IncomeActivity extends AppCompatActivity {
             }
         });
     }
+    public void loadIncomes(){
+        incomes = dbHelper.getUserIncomes(1);
+        adapter.setIncomes(incomes);
+        adapter.notifyDataSetChanged();
+
+    }
+
 
     private void showAddIncomeDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -74,6 +96,9 @@ public class IncomeActivity extends AppCompatActivity {
 
             // Add the income to the database
             if (dbHelper.addIncome(userId, incomeType, incomeDate, incomeAmount, incomeDescription)) {
+                incomes = dbHelper.getUserIncomes(userId);
+                adapter.setIncomes(incomes);
+                adapter.notifyDataSetChanged();
                 Toast.makeText(IncomeActivity.this, "Income added!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(IncomeActivity.this, "Failed to add income", Toast.LENGTH_SHORT).show();

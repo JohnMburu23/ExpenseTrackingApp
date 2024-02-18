@@ -308,11 +308,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return incomes;
     }
-    public boolean deleteExpense(int userId, int expenseId) {
+    public boolean deleteExpense(int expenseId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            int rowsAffected = db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + "=? AND " + COLUMN_EXPENSE_USER_ID + "=?",
-                    new String[]{String.valueOf(expenseId), String.valueOf(userId)});
+            int rowsAffected = db.delete(TABLE_EXPENSE, COLUMN_EXPENSE_ID + "=?",
+                    new String[]{String.valueOf(expenseId)});
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -321,11 +321,11 @@ public class DBHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-    public boolean deleteIncome(int userId, int incomeId) {
+    public boolean deleteIncome(int incomeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            int rowsAffected = db.delete(TABLE_INCOME, COLUMN_INCOME_ID + "=? AND " + COLUMN_INCOME_USER_ID + "=?",
-                    new String[]{String.valueOf(incomeId), String.valueOf(userId)});
+            int rowsAffected = db.delete(TABLE_INCOME, COLUMN_INCOME_ID + "=?",
+                    new String[]{String.valueOf(incomeId)});
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -334,11 +334,11 @@ public class DBHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-    public boolean deleteBudget(int userId, int budgetId) {
+    public boolean deleteBudget(int budgetId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            int rowsAffected = db.delete(TABLE_BUDGET, COLUMN_BUDGET_ID + "=? AND " + COLUMN_BUDGET_USER_ID + "=?",
-                    new String[]{String.valueOf(budgetId), String.valueOf(userId)});
+            int rowsAffected = db.delete(TABLE_BUDGET, COLUMN_BUDGET_ID + "=?",
+                    new String[]{String.valueOf(budgetId)});
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();

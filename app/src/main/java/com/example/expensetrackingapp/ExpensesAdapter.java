@@ -95,7 +95,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteExpense(expenses.get(position).getUserId(),expenses.get(position).getExpenseId());
+                    dbHelper.deleteExpense(expenses.get(position).getExpenseId());
 
                     // Remove item from list
                     expenses.remove(position);

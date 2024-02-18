@@ -75,6 +75,8 @@ public class BudgetingActivity extends AppCompatActivity {
             }
         });
 
+        dialogBuilder.setTitle("Add Budget");
+        dialogBuilder.setIcon(R.drawable.ic_plus);
         dialogBuilder.setPositiveButton("Set Budget", (dialog, which) -> {
             String budgetType = spinnerBudgetType.getSelectedItem().toString();
             String budgetAmountStr = editTextAmount.getText().toString();

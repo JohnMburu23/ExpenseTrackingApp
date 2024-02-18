@@ -78,6 +78,8 @@ public class IncomeActivity extends AppCompatActivity {
             }
         });
 
+        dialogBuilder.setIcon(R.drawable.ic_plus);
+        dialogBuilder.setTitle("Add Income");
         dialogBuilder.setPositiveButton("Add Income", (dialog, which) -> {
             String incomeType = spinnerIncomeType.getSelectedItem().toString();
             String incomeAmountStr = editTextAmount.getText().toString();

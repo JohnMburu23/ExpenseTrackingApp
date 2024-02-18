@@ -97,7 +97,7 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteIncome(incomes.get(position).getUserId(),incomes.get(position).getIncomeId());
+                    dbHelper.deleteIncome(incomes.get(position).getIncomeId());
 
                     // Remove item from list
                     incomes.remove(position);

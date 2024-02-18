@@ -88,7 +88,8 @@ public class ExpensesActivity extends AppCompatActivity {
                 showDatePicker(editTextDate);
             }
         });
-
+        dialogBuilder.setIcon(R.drawable.ic_plus);
+        dialogBuilder.setTitle("Add Expense");
         dialogBuilder.setPositiveButton("Add Expense", (dialog, which) -> {
             String expenseType = spinnerExpenseType.getSelectedItem().toString();
             String expenseAmountStr = editTextAmount.getText().toString();

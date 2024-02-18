@@ -95,7 +95,7 @@ public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetVi
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteBudget(budgets.get(position).getUserId(),budgets.get(position).getBudgetId());
+                    dbHelper.deleteBudget(budgets.get(position).getBudgetId());
 
                     // Remove item from list
                     budgets.remove(position);

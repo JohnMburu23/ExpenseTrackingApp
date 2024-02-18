@@ -13,7 +13,7 @@
     <Spinner
         android:id="@+id/spinnerExpenseToBudget"
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/edit_text_background"
         android:layout_height="wrap_content"
         android:entries="@array/expense_categories"/>
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Select Date"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/edit_text_background"
         android:focusable="false" />
 
@@ -60,7 +60,6 @@
         android:hint="description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/edit_text_background"
         android:inputType="text"/>
 

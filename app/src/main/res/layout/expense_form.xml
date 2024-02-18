@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -14,7 +14,7 @@
         android:id="@+id/spinnerExpenseType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/edit_text_background"
         android:entries="@array/expense_categories"/>
 
@@ -29,7 +29,7 @@
         android:id="@+id/editTextExpenseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/edit_text_background"
         android:hint="Select Date"
         android:focusable="false" />
@@ -44,7 +44,7 @@
         android:id="@+id/editTextExpenseAmount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:hint="amount"
         android:background="@drawable/edit_text_background"
         android:inputType="numberDecimal"/>
@@ -60,7 +60,6 @@
         android:layout_width="match_parent"
         android:background="@drawable/edit_text_background"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:hint="description"
         android:inputType="text"/>
 

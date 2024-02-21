@@ -35,6 +35,27 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+
+
+        TextView totalExpensesTextView = findViewById(R.id.totalExpensesTextView);
+        double totalExpenses = sharedPreferencesManager.getTotalExpenses();
+        totalExpensesTextView.setText("Ksh " + totalExpenses);
+
+
+        TextView totalBudgetTextView = findViewById(R.id.totalBudget);
+        double totalBudgets = sharedPreferencesManager.getTotalBudget();
+        totalBudgetTextView.setText("Ksh " + totalBudgets);
+
+
+        TextView totalIncomeTextView = findViewById(R.id.totalIncome);
+        double totalIncome = sharedPreferencesManager.getTotalIncome();
+        totalIncomeTextView.setText("Ksh " + totalIncome);
+
+        TextView totalBalanceTextView = findViewById(R.id.totalBalance);
+        double totalBalance = totalIncome - totalExpenses;
+        totalBalanceTextView.setText("Ksh "+ totalBalance);
+
 
         NavigationView navView = findViewById(R.id.nav_view);
         View headerView = navView.getHeaderView(0);

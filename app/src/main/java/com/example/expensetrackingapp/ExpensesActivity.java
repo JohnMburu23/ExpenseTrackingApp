@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,8 @@ public class ExpensesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_expenses);
         dbHelper = new DBHelper(this);
 
+
+
         // Initialize RecyclerView and adapter
         recyclerView = findViewById(R.id.recyclerViewExpenses);
         adapter = new ExpensesAdapter(expenses, dbHelper);
@@ -65,11 +68,27 @@ public class ExpensesActivity extends AppCompatActivity {
         });
     }
     public void loadExpenses(){
-        expenses = dbHelper.getUserExpenses(1);
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        int userId = sharedPreferencesManager.getUserId();
+
+        expenses = dbHelper.getUserExpenses(userId);
         adapter.setExpenses(expenses);
         adapter.notifyDataSetChanged();
 
+        double totalExpenses = calculateTotalExpenses(expenses);
+        sharedPreferencesManager.saveTotalExpenses((float) totalExpenses);
+
+
     }
+
+    private double calculateTotalExpenses(List<ExpenseModel> expenses) {
+        double totalExpenses = 0;
+        for (ExpenseModel expense : expenses) {
+            totalExpenses += expense.getAmount();
+        }
+        return totalExpenses;
+    }
+
 
     private void showAddExpenseDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
@@ -102,9 +121,10 @@ public class ExpensesActivity extends AppCompatActivity {
             }
 
             double expenseAmount = Double.parseDouble(expenseAmountStr);
+            SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+            int userId = sharedPreferencesManager.getUserId();
 
             // Add the expense to the database
-            int userId = 1;
             expenses = dbHelper.getUserExpenses(userId);
             if (dbHelper.addExpense(userId, expenseType, expenseDate, expenseAmount, expenseDescription)) {
                 expenses = dbHelper.getUserExpenses(userId);

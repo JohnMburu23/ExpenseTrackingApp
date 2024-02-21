@@ -104,6 +104,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 else if (dbHelper.checkUser(username,phoneNo, password)) {
                     Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+
+                    SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(LoginActivity.this);
+                    int userId = dbHelper.getUserIdByUsername(username);
+                    sharedPreferencesManager.saveUserId(userId);
+
+
                     EditText userNameEditText = findViewById(R.id.editTextUsername);
                     EditText phoneNumberEditText = findViewById(R.id.editTextPhoneNumber);
                     String enteredUsername = userNameEditText.getText().toString();
@@ -118,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "Login failed. Register first.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
                 }
             }
         }

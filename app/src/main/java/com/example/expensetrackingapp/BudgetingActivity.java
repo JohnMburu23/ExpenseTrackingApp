@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,10 +51,23 @@ public class BudgetingActivity extends AppCompatActivity {
         });
     }
     public void loadBudgets(){
-        budgets = dbHelper.getUserBudgets(1);
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        int userId = sharedPreferencesManager.getUserId();
+        budgets = dbHelper.getUserBudgets(userId);
         adapter.setBudgets(budgets);
         adapter.notifyDataSetChanged();
 
+        double totalBudget = calculateTotalBudget(budgets);
+        sharedPreferencesManager.saveTotalBudget((float) totalBudget);
+
+
+    }
+    private double calculateTotalBudget(List<BudgetModel> budgets) {
+        double totalBudget = 0;
+        for (BudgetModel budget : budgets) {
+            totalBudget += budget.getAmount();
+        }
+        return totalBudget;
     }
 
 
@@ -90,8 +104,10 @@ public class BudgetingActivity extends AppCompatActivity {
 
             double budgetAmount = Double.parseDouble(budgetAmountStr);
 
-            // Get user ID from session or wherever it's stored
-            int userId = 1; // Example value, you should replace it with the actual user ID
+            // Get user ID from shared preferences
+            SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+            int userId = sharedPreferencesManager.getUserId();
+
 
             // Add the budget to the database
             if (dbHelper.addBudget(userId, budgetType, budgetDate, budgetAmount, budgetDescription)) {

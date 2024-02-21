@@ -41,19 +41,18 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="Income:"
-                    android:textSize="32sp"
+                    android:text="Income"
+                    android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <TextView
 
+                    android:id="@+id/totalIncome"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="00"
-                    android:textColor="#2196F3"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -80,8 +79,8 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="Expenses:"
-                    android:textSize="32sp"
+                    android:text="Expenses"
+                    android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -90,9 +89,7 @@
                     android:layout_marginStart="8dp"
                     android:text="00"
                     android:id="@+id/totalExpensesTextView"
-                    android:textColor="#F44336"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -117,18 +114,17 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="Budgets:"
-                    android:textSize="32sp"
+                    android:text="Budgets"
+                    android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/totalBudget"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="00"
-                    android:textColor="#2196F3"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -153,18 +149,17 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:text="Balance:"
-                    android:textSize="32sp"
+                    android:text="Balance"
+                    android:textSize="28sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/totalBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="00"
-                    android:textColor="#2196F3"
-                    android:textSize="32sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
             </LinearLayout>
 

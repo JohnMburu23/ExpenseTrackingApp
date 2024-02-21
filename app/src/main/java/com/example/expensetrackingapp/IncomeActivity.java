@@ -53,11 +53,26 @@ public class IncomeActivity extends AppCompatActivity {
         });
     }
     public void loadIncomes(){
-        incomes = dbHelper.getUserIncomes(1);
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        int userId = sharedPreferencesManager.getUserId();
+        incomes = dbHelper.getUserIncomes(userId);
         adapter.setIncomes(incomes);
         adapter.notifyDataSetChanged();
 
+        double totalIncome = calculateTotalIncome(incomes);
+        sharedPreferencesManager.saveTotalIncome((float) totalIncome);
+
+
     }
+    private double calculateTotalIncome(List<IncomeModel> incomes) {
+        double totalIncome = 0;
+        for (IncomeModel income : incomes) {
+            totalIncome += income.getAmount();
+        }
+        return totalIncome;
+    }
+
+
 
 
     private void showAddIncomeDialog() {
@@ -93,8 +108,8 @@ public class IncomeActivity extends AppCompatActivity {
 
             double incomeAmount = Double.parseDouble(incomeAmountStr);
 
-            // Get user ID from session or wherever it's stored
-            int userId = 1; // Example value, you should replace it with the actual user ID
+            SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+            int userId = sharedPreferencesManager.getUserId();
 
             // Add the income to the database
             if (dbHelper.addIncome(userId, incomeType, incomeDate, incomeAmount, incomeDescription)) {

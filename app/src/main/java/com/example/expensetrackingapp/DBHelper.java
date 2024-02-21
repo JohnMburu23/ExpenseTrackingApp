@@ -347,6 +347,18 @@ public class DBHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-
-
+    public int getUserIdByUsername(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int userId = -1;
+        String[] columns = {COLUMN_ID};
+        String selection = COLUMN_USERNAME + "=?";
+        String[] selectionArgs = {username};
+        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(cursor.getColumnIndex(COLUMN_ID));
+        }
+        cursor.close();
+        db.close();
+        return userId;
+    }
 }

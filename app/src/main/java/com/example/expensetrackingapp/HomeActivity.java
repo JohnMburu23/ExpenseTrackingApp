@@ -107,10 +107,6 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.expenses:
                     startActivity(new Intent(HomeActivity.this,ExpensesActivity.class));
                     return true;
-                case R.id.home:
-                    //startActivity(new Intent(HomeActivity.this,HomeActivity.class));
-                    //finish();
-                    return true;
                 case R.id.budgeting:
                     startActivity(new Intent(HomeActivity.this,BudgetingActivity.class));
                     return true;

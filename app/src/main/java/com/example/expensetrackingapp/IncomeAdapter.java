@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeViewHolder> {
+    private IncomeAdapter.OnIncomeLongClickListener longClickListener;
 
     private List<IncomeModel> incomes;
     private DBHelper dbHelper;
@@ -22,6 +23,14 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
     public IncomeAdapter(List<IncomeModel> incomes,DBHelper dbHelper) {
         this.incomes = incomes;
         this.dbHelper = dbHelper;
+    }
+    // Define interface for long click listener
+    public interface OnIncomeLongClickListener {
+        void onLongClick(IncomeModel income);
+    }
+    // Method to set long click listener
+    public void setOnIncomeLongClickListener(IncomeAdapter.OnIncomeLongClickListener listener) {
+        this.longClickListener = listener;
     }
 
     public void setIncomes(List<IncomeModel> incomes) {
@@ -32,7 +41,16 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
     @Override
     public IncomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_income, parent, false);
-        return new IncomeViewHolder(view);
+        IncomeAdapter.IncomeViewHolder viewHolder = new IncomeAdapter.IncomeViewHolder(view);
+        view.setOnLongClickListener(v -> {
+            int position = viewHolder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION && longClickListener != null) {
+                longClickListener.onLongClick(incomes.get(position));
+                return true;
+            }
+            return false;
+        });
+        return viewHolder;
     }
 
 
@@ -41,6 +59,12 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
     @Override
     public void onBindViewHolder(@NonNull IncomeAdapter.IncomeViewHolder holder, int position) {
         IncomeModel income = incomes.get(position);
+        holder.itemView.setOnLongClickListener(view -> {
+            if (longClickListener != null) {
+                longClickListener.onLongClick(income);
+            }
+            return true;
+        });
         holder.bind(income);
     }
 
@@ -66,18 +90,6 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
             incomeAmountTextView = itemView.findViewById(R.id.incomeAmountTextView);
             incomeDescriptionTextView = itemView.findViewById(R.id.incomeDescriptionTextView);
 
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        showDeleteDialog(position);
-                        return true;
-                    }
-                    return false;
-                }
-            });
         }
 
         public void bind(IncomeModel income) {
@@ -87,25 +99,5 @@ public class IncomeAdapter extends RecyclerView.Adapter<IncomeAdapter.IncomeView
             incomeDescriptionTextView.setText(income.getDescription());
         }
 
-        private void showDeleteDialog(final int position) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Delete Income Source");
-            builder.setMessage("Do you want to remove this Income source?");
-            builder.setIcon(R.drawable.ic_delete);
-
-
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteIncome(incomes.get(position).getIncomeId());
-
-                    // Remove item from list
-                    incomes.remove(position);
-                    notifyItemRemoved(position);
-                }
-            });
-            builder.setNegativeButton("No", null);
-            builder.show();
-        }
     }
 }

@@ -29,30 +29,30 @@ public class SharedPreferencesManager {
         return sharedPreferences.getInt(KEY_USER_ID, -1); // Return -1 if user ID is not found
     }
 
-    public void saveTotalExpenses(float totalExpenses) {
-        editor.putFloat(KEY_TOTAL_EXPENSES, totalExpenses);
+    public void saveTotalExpenses(int userId,float totalExpenses) {
+        editor.putFloat(KEY_TOTAL_EXPENSES + userId, totalExpenses);
         editor.apply();
     }
 
-    public float getTotalExpenses() {
-        return sharedPreferences.getFloat(KEY_TOTAL_EXPENSES, 0.0f);
+    public float getTotalExpenses(int userId) {
+        return sharedPreferences.getFloat(KEY_TOTAL_EXPENSES + userId, 0.0f);
     }
 
-    public void saveTotalIncome(float totalIncome) {
-        editor.putFloat(KEY_TOTAL_INCOME, totalIncome);
+    public void saveTotalIncome(int userId,float totalIncome) {
+        editor.putFloat(KEY_TOTAL_INCOME + userId, totalIncome);
         editor.apply();
     }
 
-    public float getTotalIncome() {
-        return sharedPreferences.getFloat(KEY_TOTAL_INCOME, 0.0f);
+    public float getTotalIncome(int userId) {
+        return sharedPreferences.getFloat(KEY_TOTAL_INCOME + userId, 0.0f);
     }
 
-    public void saveTotalBudget(float totalBudget) {
-        editor.putFloat(KEY_TOTAL_BUDGET, totalBudget);
+    public void saveTotalBudget(int userId,float totalBudget) {
+        editor.putFloat(KEY_TOTAL_BUDGET + userId, totalBudget);
         editor.apply();
     }
 
-    public float getTotalBudget() {
-        return sharedPreferences.getFloat(KEY_TOTAL_BUDGET, 0.0f);
+    public float getTotalBudget(int userId) {
+        return sharedPreferences.getFloat(KEY_TOTAL_BUDGET + userId, 0.0f);
     }
 }

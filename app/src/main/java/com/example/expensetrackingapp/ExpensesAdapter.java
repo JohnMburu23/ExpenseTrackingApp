@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ExpenseViewHolder> {
+    private OnExpenseLongClickListener longClickListener;
 
     private List<ExpenseModel> expenses;
     private DBHelper dbHelper;
@@ -25,6 +26,14 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
         this.dbHelper = dbHelper;
 
     }
+    // Define interface for long click listener
+    public interface OnExpenseLongClickListener {
+        void onLongClick(ExpenseModel expense);
+    }
+    // Method to set long click listener
+    public void setOnExpenseLongClickListener(OnExpenseLongClickListener listener) {
+        this.longClickListener = listener;
+    }
 
     public void setExpenses(List<ExpenseModel> expenses) {
         this.expenses = expenses;
@@ -34,15 +43,30 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
     @Override
     public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expenses, parent, false);
-
-        return new ExpenseViewHolder(view);
+        ExpenseViewHolder viewHolder = new ExpenseViewHolder(view);
+        view.setOnLongClickListener(v -> {
+            int position = viewHolder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION && longClickListener != null) {
+                longClickListener.onLongClick(expenses.get(position));
+                return true;
+            }
+            return false;
+        });
+        return viewHolder;
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         ExpenseModel expense = expenses.get(position);
+        holder.itemView.setOnLongClickListener(view -> {
+            if (longClickListener != null) {
+                longClickListener.onLongClick(expense);
+            }
+            return true;
+        });
         holder.bind(expense);
+
     }
 
     @Override
@@ -62,22 +86,12 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setClickable(true);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             amountTextView = itemView.findViewById(R.id.amountTextView);
             descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
-            // Set OnClickListener on the entire item
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        showDeleteDialog(position);
-                        return true;
-                    }
-                    return false;
-                }
-            });
+
         }
 
         public void bind(ExpenseModel expense) {
@@ -86,24 +100,6 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
             amountTextView.setText(String.valueOf(expense.getAmount()));
             descriptionTextView.setText(expense.getDescription());
         }
-        private void showDeleteDialog(final int position) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Delete Expense");
-            builder.setIcon(R.drawable.ic_delete);
-            builder.setMessage("Do you want to remove this Expense?");
 
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteExpense(expenses.get(position).getExpenseId());
-
-                    // Remove item from list
-                    expenses.remove(position);
-                    notifyItemRemoved(position);
-                }
-            });
-            builder.setNegativeButton("No", null);
-            builder.show();
-        }
     }
 }

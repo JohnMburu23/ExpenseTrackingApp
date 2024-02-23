@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetViewHolder> {
+    private BudgetsAdapter.OnBudgetLongClickListener longClickListener;
 
     private List<BudgetModel> budgets;
     private DBHelper dbHelper;
@@ -22,6 +23,14 @@ public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetVi
     public BudgetsAdapter(List<BudgetModel> budgets,DBHelper dbHelper) {
         this.budgets = budgets;
         this.dbHelper = dbHelper;
+    }
+    // Define interface for long click listener
+    public interface OnBudgetLongClickListener {
+        void onLongClick(BudgetModel budget);
+    }
+    // Method to set long click listener
+    public void setOnBudgetLongClickListener(BudgetsAdapter.OnBudgetLongClickListener listener) {
+        this.longClickListener = listener;
     }
 
     public void setBudgets(List<BudgetModel> budgets) {
@@ -32,7 +41,16 @@ public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetVi
     @Override
     public BudgetViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_budget, parent, false);
-        return new BudgetViewHolder(view);
+        BudgetsAdapter.BudgetViewHolder viewHolder = new BudgetsAdapter.BudgetViewHolder(view);
+        view.setOnLongClickListener(v -> {
+            int position = viewHolder.getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION && longClickListener != null) {
+                longClickListener.onLongClick(budgets.get(position));
+                return true;
+            }
+            return false;
+        });
+        return viewHolder;
     }
 
 
@@ -41,6 +59,12 @@ public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetVi
     @Override
     public void onBindViewHolder(@NonNull BudgetsAdapter.BudgetViewHolder holder, int position) {
         BudgetModel budget = budgets.get(position);
+        holder.itemView.setOnLongClickListener(view -> {
+            if (longClickListener != null) {
+                longClickListener.onLongClick(budget);
+            }
+            return true;
+        });
         holder.bind(budget);
     }
 
@@ -65,18 +89,6 @@ public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetVi
             budgetDateTextView = itemView.findViewById(R.id.budgetDateTextView);
             budgetAmountTextView = itemView.findViewById(R.id.budgetAmountTextView);
             budgetDescriptionTextView = itemView.findViewById(R.id.budgetDescriptionTextView);
-
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    int position = getAdapterPosition();
-                    if (position != RecyclerView.NO_POSITION) {
-                        showDeleteDialog(position);
-                        return true;
-                    }
-                    return false;
-                }
-            });
         }
 
         public void bind(BudgetModel budget) {
@@ -86,24 +98,6 @@ public class BudgetsAdapter extends RecyclerView.Adapter<BudgetsAdapter.BudgetVi
             budgetDescriptionTextView.setText(budget.getDescription());
         }
 
-        private void showDeleteDialog(final int position) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Delete Budget");
-            builder.setIcon(R.drawable.ic_delete);
-            builder.setMessage("Do you want to remove this Budget?");
 
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dbHelper.deleteBudget(budgets.get(position).getBudgetId());
-
-                    // Remove item from list
-                    budgets.remove(position);
-                    notifyItemRemoved(position);
-                }
-            });
-            builder.setNegativeButton("No", null);
-            builder.show();
-        }
     }
 }

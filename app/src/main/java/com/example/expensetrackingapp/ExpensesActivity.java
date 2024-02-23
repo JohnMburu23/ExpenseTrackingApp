@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Calendar;
 import java.util.List;
 
-public class ExpensesActivity extends AppCompatActivity {
+public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapter.OnExpenseLongClickListener{
     private DBHelper dbHelper;
     private RecyclerView recyclerView;
     private ExpensesAdapter adapter;
@@ -49,9 +49,12 @@ public class ExpensesActivity extends AppCompatActivity {
 
 
 
+
+
         // Initialize RecyclerView and adapter
         recyclerView = findViewById(R.id.recyclerViewExpenses);
         adapter = new ExpensesAdapter(expenses, dbHelper);
+        adapter.setOnExpenseLongClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -67,6 +70,27 @@ public class ExpensesActivity extends AppCompatActivity {
             }
         });
     }
+    // Implement long click listener method
+    @Override
+    public void onLongClick(ExpenseModel expense) {
+        // Show dialog for confirmation before deletion
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Expense");
+        builder.setIcon(R.drawable.ic_delete);
+        builder.setMessage("Are you sure you want to delete this expense?");
+        builder.setPositiveButton("Delete", (dialogInterface, i) -> {
+            // Perform deletion
+            if (dbHelper.deleteExpense(expense.getExpenseId())) {
+                // Reload expenses after deletion
+                loadExpenses();
+                Toast.makeText(ExpensesActivity.this, "Expense deleted!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ExpensesActivity.this, "Failed to delete expense!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
+    }
     public void loadExpenses(){
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         int userId = sharedPreferencesManager.getUserId();
@@ -76,7 +100,7 @@ public class ExpensesActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         double totalExpenses = calculateTotalExpenses(expenses);
-        sharedPreferencesManager.saveTotalExpenses((float) totalExpenses);
+        sharedPreferencesManager.saveTotalExpenses(userId,(float) totalExpenses);
 
 
     }
@@ -130,6 +154,7 @@ public class ExpensesActivity extends AppCompatActivity {
                 expenses = dbHelper.getUserExpenses(userId);
                 adapter.setExpenses(expenses);
                 adapter.notifyDataSetChanged();
+                updateTotalExpensesDisplay();
 
                 Toast.makeText(ExpensesActivity.this, "Expense added!", Toast.LENGTH_SHORT).show();
             } else {
@@ -159,4 +184,11 @@ public class ExpensesActivity extends AppCompatActivity {
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
         datePickerDialog.show();
     }
+    private void updateTotalExpensesDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        int userId = sharedPreferencesManager.getUserId();
+        double totalExpenses = calculateTotalExpenses(expenses);
+        sharedPreferencesManager.saveTotalExpenses(userId,(float) totalExpenses);
+    }
+
 }

@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class IncomeActivity extends AppCompatActivity {
+public class IncomeActivity extends AppCompatActivity implements IncomeAdapter.OnIncomeLongClickListener{
     private DBHelper dbHelper;
     private RecyclerView recyclerView;
     private IncomeAdapter adapter;
@@ -37,6 +37,7 @@ public class IncomeActivity extends AppCompatActivity {
         // Initialize RecyclerView and adapter
         recyclerView = findViewById(R.id.recyclerViewIncome);
         adapter = new IncomeAdapter(incomes,dbHelper);
+        adapter.setOnIncomeLongClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -52,6 +53,27 @@ public class IncomeActivity extends AppCompatActivity {
             }
         });
     }
+    // Implement long click listener method
+    @Override
+    public void onLongClick(IncomeModel income) {
+        // Show dialog for confirmation before deletion
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Income");
+        builder.setIcon(R.drawable.ic_delete);
+        builder.setMessage("Are you sure you want to delete this income?");
+        builder.setPositiveButton("Delete", (dialogInterface, i) -> {
+            // Perform deletion
+            if (dbHelper.deleteIncome(income.getIncomeId())) {
+                // Reload incomes after deletion
+                loadIncomes();
+                Toast.makeText(IncomeActivity.this, "Income deleted!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(IncomeActivity.this, "Failed to delete income!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
+    }
     public void loadIncomes(){
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         int userId = sharedPreferencesManager.getUserId();
@@ -60,7 +82,7 @@ public class IncomeActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         double totalIncome = calculateTotalIncome(incomes);
-        sharedPreferencesManager.saveTotalIncome((float) totalIncome);
+        sharedPreferencesManager.saveTotalIncome(userId,(float) totalIncome);
 
 
     }
@@ -116,6 +138,7 @@ public class IncomeActivity extends AppCompatActivity {
                 incomes = dbHelper.getUserIncomes(userId);
                 adapter.setIncomes(incomes);
                 adapter.notifyDataSetChanged();
+                updateTotalIncomeDisplay();
                 Toast.makeText(IncomeActivity.this, "Income added!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(IncomeActivity.this, "Failed to add income", Toast.LENGTH_SHORT).show();
@@ -143,5 +166,10 @@ public class IncomeActivity extends AppCompatActivity {
                 }, year, month, dayOfMonth);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
         datePickerDialog.show();
+    }
+    private void updateTotalIncomeDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        double totalIncome = calculateTotalIncome(incomes);
+        sharedPreferencesManager.saveTotalIncome(sharedPreferencesManager.getUserId(),(float) totalIncome);
     }
 }

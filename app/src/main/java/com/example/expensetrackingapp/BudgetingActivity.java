@@ -19,7 +19,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.List;
 
-public class BudgetingActivity extends AppCompatActivity {
+public class BudgetingActivity extends AppCompatActivity implements BudgetsAdapter.OnBudgetLongClickListener{
     private DBHelper dbHelper;
     private RecyclerView recyclerView;
     private BudgetsAdapter adapter;
@@ -35,6 +35,7 @@ public class BudgetingActivity extends AppCompatActivity {
         // Initialize RecyclerView and adapter
         recyclerView = findViewById(R.id.recyclerViewBudgeting);
         adapter = new BudgetsAdapter(budgets,dbHelper);
+        adapter.setOnBudgetLongClickListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
@@ -50,6 +51,27 @@ public class BudgetingActivity extends AppCompatActivity {
             }
         });
     }
+    // Implement long click listener method
+    @Override
+    public void onLongClick(BudgetModel budget) {
+        // Show dialog for confirmation before deletion
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Budget");
+        builder.setIcon(R.drawable.ic_delete);
+        builder.setMessage("Are you sure you want to delete this budget?");
+        builder.setPositiveButton("Delete", (dialogInterface, i) -> {
+            // Perform deletion
+            if (dbHelper.deleteBudget(budget.getBudgetId())) {
+                // Reload budgets after deletion
+                loadBudgets();
+                Toast.makeText(BudgetingActivity.this, "Budget deleted!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(BudgetingActivity.this, "Failed to delete budget!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
+    }
     public void loadBudgets(){
         SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
         int userId = sharedPreferencesManager.getUserId();
@@ -58,7 +80,7 @@ public class BudgetingActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
 
         double totalBudget = calculateTotalBudget(budgets);
-        sharedPreferencesManager.saveTotalBudget((float) totalBudget);
+        sharedPreferencesManager.saveTotalBudget(userId,(float) totalBudget);
 
 
     }
@@ -114,6 +136,7 @@ public class BudgetingActivity extends AppCompatActivity {
                 budgets = dbHelper.getUserBudgets(userId);
                 adapter.setBudgets(budgets);
                 adapter.notifyDataSetChanged();
+                updateTotalBudgetDisplay();
                 Toast.makeText(BudgetingActivity.this, "Budget set successfully!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(BudgetingActivity.this, "Failed to set budget", Toast.LENGTH_SHORT).show();
@@ -142,5 +165,10 @@ public class BudgetingActivity extends AppCompatActivity {
                 }, year, month, dayOfMonth);
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis()-1000);
         datePickerDialog.show();
+    }
+    private void updateTotalBudgetDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        double totalBudget = calculateTotalBudget(budgets);
+        sharedPreferencesManager.saveTotalBudget(sharedPreferencesManager.getUserId(),(float) totalBudget);
     }
 }

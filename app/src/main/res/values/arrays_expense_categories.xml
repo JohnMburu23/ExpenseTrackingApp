@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="expense_categories">
-        <item>Food</item>
-        <item>Transport</item>
+        <item>Food &amp; Drinks</item>
+        <item>Travel</item>
         <item>Education</item>
+        <item>Fuel</item>
         <item>Rent/Mortage</item>
-        <item>Utilities(electricity,water,gas,etc)</item>
+        <item>Utilities</item>
         <item>Groceries</item>
         <item>Entertainment</item>
         <item>Clothing</item>

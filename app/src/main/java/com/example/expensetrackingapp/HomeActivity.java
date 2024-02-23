@@ -39,17 +39,17 @@ public class HomeActivity extends AppCompatActivity {
 
 
         TextView totalExpensesTextView = findViewById(R.id.totalExpensesTextView);
-        double totalExpenses = sharedPreferencesManager.getTotalExpenses();
+        double totalExpenses = sharedPreferencesManager.getTotalExpenses(sharedPreferencesManager.getUserId());
         totalExpensesTextView.setText("Ksh " + totalExpenses);
 
 
         TextView totalBudgetTextView = findViewById(R.id.totalBudget);
-        double totalBudgets = sharedPreferencesManager.getTotalBudget();
+        double totalBudgets = sharedPreferencesManager.getTotalBudget(sharedPreferencesManager.getUserId());
         totalBudgetTextView.setText("Ksh " + totalBudgets);
 
 
         TextView totalIncomeTextView = findViewById(R.id.totalIncome);
-        double totalIncome = sharedPreferencesManager.getTotalIncome();
+        double totalIncome = sharedPreferencesManager.getTotalIncome(sharedPreferencesManager.getUserId());
         totalIncomeTextView.setText("Ksh " + totalIncome);
 
         TextView totalBalanceTextView = findViewById(R.id.totalBalance);
@@ -119,6 +119,41 @@ public class HomeActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateTotalExpensesDisplay();
+        updateTotalBudgetDisplay();
+        updateTotalIncomeDisplay();
+        updateTotalBalanceDisplay();
+    }
+
+    private double updateTotalExpensesDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        double totalExpenses = sharedPreferencesManager.getTotalExpenses(sharedPreferencesManager.getUserId());
+        TextView totalExpensesTextView = findViewById(R.id.totalExpensesTextView);
+        totalExpensesTextView.setText("Ksh " + totalExpenses);
+        return totalExpenses;
+    }
+    private double updateTotalIncomeDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        double totalIncome = sharedPreferencesManager.getTotalIncome(sharedPreferencesManager.getUserId());
+        TextView totalIncomeTextView = findViewById(R.id.totalIncome);
+        totalIncomeTextView.setText("Ksh " + totalIncome);
+        return totalIncome;
+    }
+    private void updateTotalBudgetDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        double totalBudget = sharedPreferencesManager.getTotalBudget(sharedPreferencesManager.getUserId());
+        TextView totalBudgetTextView = findViewById(R.id.totalBudget);
+        totalBudgetTextView.setText("Ksh " + totalBudget);
+    }
+    private void updateTotalBalanceDisplay() {
+        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
+        double totalBalance = updateTotalIncomeDisplay() - updateTotalExpensesDisplay();
+        TextView totalBalanceTextView = findViewById(R.id.totalBalance);
+        totalBalanceTextView.setText("Ksh " + totalBalance);
+    }
 
     @Override
     public void  onBackPressed(){
@@ -139,4 +174,5 @@ public class HomeActivity extends AppCompatActivity {
                 });
         builder.create().show();//to create and show the AlertDialog
     }
+
 }

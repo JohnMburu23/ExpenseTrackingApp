@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/bottomnavlayout"
         app:menu="@menu/bottom_navigation_menu"
-        android:background="#2196F3"
+        android:background="#2196F3" 
         >
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>

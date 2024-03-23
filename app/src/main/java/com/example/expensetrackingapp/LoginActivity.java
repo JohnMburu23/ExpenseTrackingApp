@@ -123,9 +123,11 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
 
-                } else {
-                    Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
                 }
+                    else {
+                    Toast.makeText(LoginActivity.this, "Wrong username, phone number or password!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         }
 

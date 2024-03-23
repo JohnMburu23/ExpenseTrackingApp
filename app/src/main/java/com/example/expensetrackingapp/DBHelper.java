@@ -182,6 +182,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         return count > 0;
     }
+
     public boolean checkUserExists(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         String[] columns = {COLUMN_ID};

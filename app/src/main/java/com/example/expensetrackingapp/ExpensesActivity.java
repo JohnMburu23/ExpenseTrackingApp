@@ -4,31 +4,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import java.util.Calendar;
-import android.app.DatePickerDialog;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.EditText;
+
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapter.OnExpenseLongClickListener{
@@ -70,6 +65,36 @@ public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapt
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_expenses,menu);
+        //find the search menu item
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sort_date:
+                sortItemsByDate();
+                return true;
+            case R.id.sort_amount:
+                sortItemsByAmount();
+                return true;
+            case R.id.sort_alphabetical:
+                sortItemsAlphabetically();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     // Implement long click listener method
     @Override
     public void onLongClick(ExpenseModel expense) {
@@ -103,6 +128,33 @@ public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapt
         sharedPreferencesManager.saveTotalExpenses(userId,(float) totalExpenses);
 
 
+    }
+    public void sortItemsByDate(){
+        Collections.sort(expenses,new Comparator<ExpenseModel>(){
+            @Override
+            public int compare(ExpenseModel o1,ExpenseModel o2){
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    public void sortItemsByAmount(){
+        Collections.sort(expenses,new Comparator<ExpenseModel>(){
+            @Override
+            public int compare(ExpenseModel o1,ExpenseModel o2){
+                return Double.compare(o1.getAmount(),o2.getAmount());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    public void sortItemsAlphabetically(){
+        Collections.sort(expenses,new Comparator<ExpenseModel>(){
+            @Override
+            public int compare(ExpenseModel o1,ExpenseModel o2){
+                return o1.getCategory().compareTo(o2.getCategory());
+            }
+        });
+        adapter.notifyDataSetChanged();
     }
 
     private double calculateTotalExpenses(List<ExpenseModel> expenses) {

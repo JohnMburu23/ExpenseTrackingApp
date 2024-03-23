@@ -9,6 +9,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -53,6 +57,29 @@ public class IncomeActivity extends AppCompatActivity implements IncomeAdapter.O
             }
         });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_expenses,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sort_date:
+                sortItemsByDate();
+                return true;
+            case R.id.sort_amount:
+                sortItemsByAmount();
+                return true;
+            case R.id.sort_alphabetical:
+                sortItemsAlphabetically();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     // Implement long click listener method
     @Override
     public void onLongClick(IncomeModel income) {
@@ -83,9 +110,36 @@ public class IncomeActivity extends AppCompatActivity implements IncomeAdapter.O
 
         double totalIncome = calculateTotalIncome(incomes);
         sharedPreferencesManager.saveTotalIncome(userId,(float) totalIncome);
-
-
     }
+    public void sortItemsByDate(){
+        Collections.sort(incomes,new Comparator<IncomeModel>(){
+            @Override
+            public int compare(IncomeModel o1,IncomeModel o2){
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    public void sortItemsByAmount(){
+        Collections.sort(incomes,new Comparator<IncomeModel>(){
+            @Override
+            public int compare(IncomeModel o1,IncomeModel o2){
+                return Double.compare(o1.getAmount(),o2.getAmount());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    public void sortItemsAlphabetically(){
+        Collections.sort(incomes,new Comparator<IncomeModel>(){
+            @Override
+            public int compare(IncomeModel o1,IncomeModel o2){
+                return o1.getCategory().compareTo(o2.getCategory());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+
     private double calculateTotalIncome(List<IncomeModel> incomes) {
         double totalIncome = 0;
         for (IncomeModel income : incomes) {

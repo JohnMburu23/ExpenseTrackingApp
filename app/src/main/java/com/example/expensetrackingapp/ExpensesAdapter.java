@@ -3,6 +3,7 @@ package com.example.expensetrackingapp;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.Expens
     }
     // Define interface for long click listener
     public interface OnExpenseLongClickListener {
+        boolean onOptionsItemSelected(MenuItem item);
+
         void onLongClick(ExpenseModel expense);
     }
     // Method to set long click listener

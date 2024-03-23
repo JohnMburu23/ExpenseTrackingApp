@@ -9,6 +9,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class BudgetingActivity extends AppCompatActivity implements BudgetsAdapter.OnBudgetLongClickListener{
@@ -51,6 +55,30 @@ public class BudgetingActivity extends AppCompatActivity implements BudgetsAdapt
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_expenses,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.sort_date:
+                sortItemsByDate();
+                return true;
+            case R.id.sort_amount:
+                sortItemsByAmount();
+                return true;
+            case R.id.sort_alphabetical:
+                sortItemsAlphabetically();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     // Implement long click listener method
     @Override
     public void onLongClick(BudgetModel budget) {
@@ -81,9 +109,36 @@ public class BudgetingActivity extends AppCompatActivity implements BudgetsAdapt
 
         double totalBudget = calculateTotalBudget(budgets);
         sharedPreferencesManager.saveTotalBudget(userId,(float) totalBudget);
-
-
     }
+
+    public void sortItemsByDate(){
+        Collections.sort(budgets,new Comparator<BudgetModel>(){
+            @Override
+            public int compare(BudgetModel o1,BudgetModel o2){
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    public void sortItemsByAmount(){
+        Collections.sort(budgets,new Comparator<BudgetModel>(){
+            @Override
+            public int compare(BudgetModel o1,BudgetModel o2){
+                return Double.compare(o1.getAmount(),o2.getAmount());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+    public void sortItemsAlphabetically(){
+        Collections.sort(budgets,new Comparator<BudgetModel>(){
+            @Override
+            public int compare(BudgetModel o1,BudgetModel o2){
+                return o1.getCategory().compareTo(o2.getCategory());
+            }
+        });
+        adapter.notifyDataSetChanged();
+    }
+
     private double calculateTotalBudget(List<BudgetModel> budgets) {
         double totalBudget = 0;
         for (BudgetModel budget : budgets) {

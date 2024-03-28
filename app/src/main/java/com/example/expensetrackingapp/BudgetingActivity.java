@@ -112,12 +112,8 @@ public class BudgetingActivity extends AppCompatActivity implements BudgetsAdapt
     }
 
     public void sortItemsByDate(){
-        Collections.sort(budgets,new Comparator<BudgetModel>(){
-            @Override
-            public int compare(BudgetModel o1,BudgetModel o2){
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
+
+        loadBudgets();
         adapter.notifyDataSetChanged();
     }
     public void sortItemsByAmount(){

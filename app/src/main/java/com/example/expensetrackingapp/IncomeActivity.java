@@ -112,12 +112,7 @@ public class IncomeActivity extends AppCompatActivity implements IncomeAdapter.O
         sharedPreferencesManager.saveTotalIncome(userId,(float) totalIncome);
     }
     public void sortItemsByDate(){
-        Collections.sort(incomes,new Comparator<IncomeModel>(){
-            @Override
-            public int compare(IncomeModel o1,IncomeModel o2){
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
+        loadIncomes();
         adapter.notifyDataSetChanged();
     }
     public void sortItemsByAmount(){

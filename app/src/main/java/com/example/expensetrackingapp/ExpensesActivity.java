@@ -130,12 +130,7 @@ public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapt
 
     }
     public void sortItemsByDate(){
-        Collections.sort(expenses,new Comparator<ExpenseModel>(){
-            @Override
-            public int compare(ExpenseModel o1,ExpenseModel o2){
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
+        loadExpenses();
         adapter.notifyDataSetChanged();
     }
     public void sortItemsByAmount(){

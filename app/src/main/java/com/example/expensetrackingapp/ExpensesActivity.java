@@ -72,7 +72,6 @@ public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapt
 
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){

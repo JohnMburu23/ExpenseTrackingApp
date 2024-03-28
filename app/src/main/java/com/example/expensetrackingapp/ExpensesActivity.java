@@ -69,10 +69,6 @@ public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapt
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_expenses,menu);
-        //find the search menu item
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
 
         return true;
     }

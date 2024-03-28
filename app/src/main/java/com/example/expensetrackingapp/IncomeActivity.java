@@ -182,7 +182,7 @@ public class IncomeActivity extends AppCompatActivity implements IncomeAdapter.O
             SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
             int userId = sharedPreferencesManager.getUserId();
 
-            // Add the income to the database
+            // Add income to the database
             if (dbHelper.addIncome(userId, incomeType, incomeDate, incomeAmount, incomeDescription)) {
                 incomes = dbHelper.getUserIncomes(userId);
                 adapter.setIncomes(incomes);

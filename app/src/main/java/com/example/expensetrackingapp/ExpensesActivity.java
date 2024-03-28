@@ -89,7 +89,6 @@ public class ExpensesActivity extends AppCompatActivity implements ExpensesAdapt
         }
     }
 
-
     // Implement long click listener method
     @Override
     public void onLongClick(ExpenseModel expense) {
